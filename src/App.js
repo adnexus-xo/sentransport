@@ -1,61 +1,90 @@
-/*
+import { useState } from 'react';
 import './App.css';
+
 import Header from './Header';
-import ListeLignes from './ListeLignes';
+import Recherche from './Recherche';
+import LigneBus from './LigneBus';
+import DetailLigne from './DetailLigne';
 import Footer from './Footer';
 
 function App() {
+  const [recherche, setRecherche] = useState('');
+  const [ligneSelectionnee, setLigneSelectionnee] = useState(null);
+
+  // Exemple de données
   const lignes = [
     {
       id: 1,
-      numero: "1",
-      depart: "Parcelles Assainies",
-      arrivee: "Plateau",
-      arrets: 14,
+      numero: '12',
+      depart: 'Dakar',
+      arrivee: 'Thiès',
+      arrets: 5,
+      listeArrets: ['Pikine', 'Rufisque', 'Diamniadio']
     },
     {
       id: 2,
-      numero: "7",
-      depart: "Guediawaye",
-      arrivee: "Place Obe",
-      arrets: 18,
-    },
-    {
-      id: 3,
-      numero: "15",
-      depart: "Pikine",
-      arrivee: "Medina",
-      arrets: 12,
-    },
-    {
-      id: 4,
-      numero: "23",
-      depart: "Ouakam",
-      arrivee: "Grand Dakar",
-      arrets: 10,
-    },
-    {
-      id: 5,
-      numero: "8",
-      depart: "Almadies",
-      arrivee: "Colobane",
-      arrets: 16,
-    },
-    {
-      id: 6,
-      numero: "12",
-      depart: "Yoff",
-      arrivee: "Sandaga",
-      arrets: 11,
-    },
+      numero: '7',
+      depart: 'Guédiawaye',
+      arrivee: 'Plateau',
+      arrets: 4,
+      listeArrets: ['Parcelles', 'Grand Yoff', 'Colobane']
+    }
   ];
+
+  // Filtrage des lignes
+  const lignesFiltrees = lignes.filter(
+    (l) =>
+      l.depart.toLowerCase().includes(recherche.toLowerCase()) ||
+      l.arrivee.toLowerCase().includes(recherche.toLowerCase()) ||
+      l.numero.includes(recherche)
+  );
+
+  // Gestion du clic
+  function handleClickLigne(ligne) {
+    if (
+      ligneSelectionnee &&
+      ligneSelectionnee.id === ligne.id
+    ) {
+      setLigneSelectionnee(null);
+    } else {
+      setLigneSelectionnee(ligne);
+    }
+  }
 
   return (
     <div className="App">
       <Header />
 
       <main className="contenu">
-        <ListeLignes lignes={lignes} />
+        <Recherche
+          valeur={recherche}
+          onChange={setRecherche}
+        />
+
+        <p className="resultat-recherche">
+          {lignesFiltrees.length} ligne
+          {lignesFiltrees.length > 1 ? 's' : ''} trouvée
+          {lignesFiltrees.length > 1 ? 's' : ''}
+        </p>
+
+        {lignesFiltrees.map((ligne) => (
+          <LigneBus
+            key={ligne.id}
+            numero={ligne.numero}
+            depart={ligne.depart}
+            arrivee={ligne.arrivee}
+            arrets={ligne.arrets}
+            estSelectionnee={
+              ligneSelectionnee &&
+              ligneSelectionnee.id === ligne.id
+            }
+            onClick={() => handleClickLigne(ligne)}
+          />
+        ))}
+
+        {ligneSelectionnee && (
+          <DetailLigne ligne={ligneSelectionnee} />
+        )}
       </main>
 
       <Footer />
@@ -64,43 +93,3 @@ function App() {
 }
 
 export default App;
-*/
-
-import './App.css';
-import Header from './Header';
-import ListeLignes from './ListeLignes';
-import Footer from './Footer';
-import StatReseau from './StatReseau';
-
-function App() {
-  const lignes = [
-    { id: 1,  numero: "1",  depart: "Parcelles Assainies", arrivee: "Plateau",     arrets: 14, couleur: "#e74c3c" },
-    { id: 2,  numero: "7",  depart: "Guediawaye",          arrivee: "Place Obé",   arrets: 18, couleur: "#3498db" },
-    { id: 3,  numero: "15", depart: "Pikine",              arrivee: "Médina",      arrets: 12, couleur: "#9b59b6" },
-    { id: 4,  numero: "23", depart: "Ouakam",              arrivee: "Grand Dakar", arrets: 10, couleur: "#e67e22" },
-    { id: 5,  numero: "8",  depart: "Almadies",            arrivee: "Colobane",    arrets: 16, couleur: "#1abc9c" },
-    { id: 6,  numero: "12", depart: "Yoff",                arrivee: "Sandaga",     arrets: 11, couleur: "#f39c12" },
-    // Exo 3 — 4 lignes supplémentaires
-    { id: 7,  numero: "4",  depart: "Fann",                arrivee: "HLM",         arrets: 9,  couleur: "#c0392b" },
-    { id: 8,  numero: "9",  depart: "Liberté 6",           arrivee: "Dieuppeul",   arrets: 13, couleur: "#2980b9" },
-    { id: 9,  numero: "17", depart: "Sicap Liberté",       arrivee: "Médina",      arrets: 8,  couleur: "#27ae60" },
-    { id: 10, numero: "21", depart: "HLM",                 arrivee: "Sandaga",     arrets: 15, couleur: "#8e44ad" },
-  ];
-
-  return (
-    <div className="App">
-      <Header />
-      <main className="contenu">
-        <StatReseau lignes={lignes} />
-        <ListeLignes lignes={lignes} />
-      </main>
-      <Footer />
-    </div>
-  );
-}
-
-export default App;
-
-
-
-

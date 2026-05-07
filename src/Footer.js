@@ -1,5 +1,5 @@
-/*
-import './Footer.css';
+
+/*import './Footer.css';
 
 function Footer() {
   return (
@@ -10,8 +10,9 @@ function Footer() {
 }
 
 export default Footer;
-*/
 
+
+*/
 import './Footer.css';
 
 function Footer() {
@@ -23,5 +24,8 @@ function Footer() {
 }
 
 export default Footer;
+
+
+
 
 
