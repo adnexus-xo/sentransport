@@ -1,4 +1,4 @@
-import "./LigneBus.css";
+import './LigneBus.css';
 
 function LigneBus({
   numero,
@@ -6,26 +6,22 @@ function LigneBus({
   arrivee,
   arrets,
   estSelectionnee,
-  onClick,
+  onClick
 }) {
   return (
     <div
-      className={`ligne-bus ${
-        estSelectionnee ? "ligne-bus-active" : ""
-      }`}
+      className={`ligne-bus ${estSelectionnee ? 'ligne-bus-active' : ''}`}
       onClick={onClick}
     >
-      <div className="ligne-numero">
-        {numero}
-      </div>
+      <div className="ligne-numero">{numero}</div>
 
       <div className="ligne-info">
         <span className="ligne-trajet">
-          {depart} &rarr; {arrivee}
+          {depart} → {arrivee}
         </span>
 
         <span className="ligne-arrets">
-          {arrets} arrets
+          {arrets} arrêts
         </span>
       </div>
     </div>
